@@ -1,7 +1,9 @@
 package com.adherence.adherence;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -34,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.adherence.adherence.Connection.DBHelper;
 import com.parse.ParseObject;
 import com.zentri.zentri_ble.BLECallbacks.ReceiveMode;
 import com.zentri.zentri_ble_command.Command;
@@ -148,10 +151,11 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
         initServiceConnection();
         initBroadcastReceiver();
         initReceiverIntentFilter();
+        //Try to initiate the
+        scheduleAlarm();
 
         startService(new Intent(this, ZentriOSBLEService.class));
         mHandler = new Handler();
-
         mStopScanTask = new Runnable()
         {
             @Override
@@ -207,29 +211,21 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
             public void onClick(View v) {
                 for (int i = 0; i < values.size(); i++) {
                     mCurrentDeviceName = values.get(i);
-                    if(mDeviceList.findDeviceWithName(mCurrentDeviceName) != null) {
-
+                    if (mDeviceList.findDeviceWithName(mCurrentDeviceName) != null) {
                         showToast("work at here", Toast.LENGTH_SHORT);
-
                         if (!mConnecting) {
                             mConnecting = true;
-
                             stopScan();
                             Log.d(TAG, "Connecting to BLE device " + mCurrentDeviceName);
                             mZentriOSBLEManager.connect(mCurrentDeviceName);
-                            Log.d(TAG,"dfasfasdfasdfasdfasdfadsfdsafa" + mCurrentDeviceName);
-
+                            Log.d(TAG, "dfasfasdfasdfasdfasdfadsfdsafa" + mCurrentDeviceName);
 //                    showConnectingDialog(view.getContext());
-
                             mHandler.postDelayed(mConnectTimeoutTask, CONNECT_TIMEOUT_MS);
                         }
                     }
                 }
-
-
             }
         });
-
         mTextToSendBox = (EditText) findViewById(R.id.editText);
         mSendTextButton = (Button) findViewById(R.id.button_send);
         mSendTextButton.setOnClickListener(new View.OnClickListener()
@@ -593,7 +589,7 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
         }
         //    }
 
-        Log.d(TAG,"SDFADSFASDFASFASFASFASFA   connected");
+        Log.d(TAG, "SDFADSFASDFASFASFASFASFA   connected");
         while(mZentriOSBLEManager == null || !mZentriOSBLEManager.isConnected()) {
 
         }
@@ -965,6 +961,19 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                 }
             }
         };
+    }
+    public void scheduleAlarm() {
+        // Construct an intent that will execute the AlarmReceiver
+        Intent intent = new Intent(getApplicationContext(), myAlarmReceiver.class);
+        // Create a PendingIntent to be triggered when the alarm goes off
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, myAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        long firstMillis = System.currentTimeMillis(); // alarm is set right away
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
+        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+                AlarmManager.INTERVAL_HOUR, pIntent);
     }
 
     public void initBroadcastManager()
