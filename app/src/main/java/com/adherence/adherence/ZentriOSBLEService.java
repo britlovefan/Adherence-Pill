@@ -83,10 +83,8 @@ public class ZentriOSBLEService extends Service implements Serializable
     {
         // The service is being created
         Log.d(TAG, "Creating service");
-
         mZentriOSBLEManager = new ZentriOSBLEManager();
         mBroadcastManager = LocalBroadcastManager.getInstance(this);
-
         initCallbacks();
         initTruconnectManager();
     }

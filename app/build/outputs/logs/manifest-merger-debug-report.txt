@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:2:1-56:12
+ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:2:1-64:12
 	package
 		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:3:5-38
 		INJECTED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml
@@ -33,7 +33,7 @@ MERGED from [499:zentri_ble:unspecified] C:\Users\Christina\Desktop\499\app\buil
 	android:name
 		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:10:9-53
 application
-ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:13:5-54:19
+ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:13:5-62:19
 MERGED from [com.android.support:recyclerview-v7:22.0.0] C:\Users\Christina\Desktop\499\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.0.0\AndroidManifest.xml:22:5-26:19
 MERGED from [com.android.support:support-v4:23.0.1] C:\Users\Christina\Desktop\499\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:design:22.2.0] C:\Users\Christina\Desktop\499\app\build\intermediates\exploded-aar\com.android.support\design\22.2.0\AndroidManifest.xml:22:5-20
@@ -78,28 +78,40 @@ receiver#com.adherence.adherence.NotificationReceiver
 ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:34:9-58
 	android:name
 		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:34:19-55
+receiver#com.adherence.adherence.myAlarmReceiver
+ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:35:9-38:20
+	android:process
+		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:37:13-38
+	android:name
+		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:36:13-44
+service#com.adherence.adherence.connectService
+ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:40:9-42:40
+	android:exported
+		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:42:13-37
+	android:name
+		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:41:13-43
 service#com.adherence.adherence.NotificationService
-ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:35:9-56
+ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:43:9-56
 	android:name
-		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:35:18-53
+		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:43:18-53
 activity#com.adherence.adherence.MainActivity2
-ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:37:9-45:20
+ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:45:9-53:20
 	android:label
-		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:39:13-45
+		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:47:13-45
 	android:name
-		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:38:13-42
+		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:46:13-42
 service#com.adherence.adherence.ZentriOSBLEService
-ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:47:9-51:19
+ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:55:9-59:19
 	android:label
-		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:50:13-49
+		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:58:13-49
 	android:icon
-		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:49:13-47
+		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:57:13-47
 	android:name
-		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:48:13-47
+		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:56:13-47
 service#com.adherence.adherence.MyService
-ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:52:9-46
+ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:60:9-46
 	android:name
-		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:52:18-43
+		ADDED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml:60:18-43
 uses-sdk
 INJECTED from C:\Users\Christina\Desktop\499\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:recyclerview-v7:22.0.0] C:\Users\Christina\Desktop\499\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.0.0\AndroidManifest.xml:20:5-43

@@ -5,9 +5,7 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +16,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
@@ -42,8 +39,6 @@ import com.zentri.zentri_ble.BLECallbacks.ReceiveMode;
 import com.zentri.zentri_ble_command.Command;
 import com.zentri.zentri_ble_command.CommandMode;
 import com.zentri.zentri_ble_command.ErrorCode;
-import com.zentri.zentri_ble_command.GPIODirection;
-import com.zentri.zentri_ble_command.GPIOFunction;
 import com.zentri.zentri_ble_command.Result;
 import com.zentri.zentri_ble_command.ZentriOSBLEManager;
 
@@ -55,13 +50,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
-public class MainActivity2 extends Activity implements com.adherence.adherence.ServiceCallbacks
+public class MainActivity2 extends Activity
 {
     private static final long SCAN_PERIOD = 5000;
     private static final long CONNECT_TIMEOUT_MS = 20000;
@@ -130,46 +120,34 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
 
     Calendar timeNow;
 
-    private Set<String> ValidDevice = new HashSet<>();    //GL: use a set to store the valid device name
-    private HashMap<String, Long> TimeTable = new HashMap<>();  //time of latest data requirement
-
     int RSSI;
     ArrayList<String> values = new ArrayList<String>();
     ArrayAdapter<String> newadapter;
-
     DBHelper mydb;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         initScanButton();
         initDeviceList();
         initBroadcastManager();
-        initServiceConnection();
         initBroadcastReceiver();
         initReceiverIntentFilter();
-        //Try to initiate the
+        //Try to initiate the Alarm Scheduler
         scheduleAlarm();
 
-        startService(new Intent(this, ZentriOSBLEService.class));
         mHandler = new Handler();
-        mStopScanTask = new Runnable()
-        {
+        mStopScanTask = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 stopScan();
             }
         };
 
-        mConnectTimeoutTask = new Runnable()
-        {
+        mConnectTimeoutTask = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -182,7 +160,8 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                 });
             }
         };
-//
+        // The Manual Button
+    /*
         mModeButton = (ToggleButton) findViewById(R.id.toggle_str_comm);
         mModeButton.setOnClickListener(new View.OnClickListener()
         {
@@ -200,30 +179,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                 x = mZentriOSBLEManager.setMode(mCurrentMode);
                 Log.d(TAG, "Mode set to: " + mCurrentMode);
                 Log.d(TAG, "Truconnect Manager returned: " + x);
-            }
-        });
-
-
-
-        AutoPhoto = (Button) findViewById(R.id.autobutton);
-        AutoPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < values.size(); i++) {
-                    mCurrentDeviceName = values.get(i);
-                    if (mDeviceList.findDeviceWithName(mCurrentDeviceName) != null) {
-                        showToast("work at here", Toast.LENGTH_SHORT);
-                        if (!mConnecting) {
-                            mConnecting = true;
-                            stopScan();
-                            Log.d(TAG, "Connecting to BLE device " + mCurrentDeviceName);
-                            mZentriOSBLEManager.connect(mCurrentDeviceName);
-                            Log.d(TAG, "dfasfasdfasdfasdfasdfadsfdsafa" + mCurrentDeviceName);
-//                    showConnectingDialog(view.getContext());
-                            mHandler.postDelayed(mConnectTimeoutTask, CONNECT_TIMEOUT_MS);
-                        }
-                    }
-                }
             }
         });
         mTextToSendBox = (EditText) findViewById(R.id.editText);
@@ -256,8 +211,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                         dataToSend = "*T" + rtc_data + "#";
                         mZentriOSBLEManager.writeData(dataToSend);
                         Log.d(TAG, "Sent: " + dataToSend);
-
-
                     }
                     else if (data.equals("C")) { // TAKE IMAGE
                         dataToSend = "*C#";
@@ -275,7 +228,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                         Log.d(TAG, "Sent: " + dataToSend);
                     }
                 }
-
                 if (mCurrentMode == ZentriOSBLEManager.MODE_COMMAND_REMOTE) {
                     if (data.isEmpty()) {
                         //mZentriOSBLEManager.GPIOGetUsage();
@@ -290,11 +242,9 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                         mZentriOSBLEManager.reboot();
                     }
                 }
-
                 mTextToSendBox.setText("");//clear input after send
             }
         });
-
         mClearTextButton = (Button) findViewById(R.id.clear_button);
         mClearTextButton.setOnClickListener(new View.OnClickListener()
         {
@@ -312,7 +262,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                 clearReceivedTextBox();
             }
         });
-
         mToggleIm = (ToggleButton) findViewById(R.id.toggle_im);
         mToggleIm.setOnClickListener(new View.OnClickListener()
         {
@@ -335,20 +284,15 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                 }
                 Log.d(TAG, "Image recording: " + mRecording);
             }
-        });
-
-
+        }); */
         mReceivedDataTextBox = (TextView) findViewById(R.id.receivedDataBox);
         mScrollView = (ScrollView) findViewById(R.id.scroll_view);
+        //GUISetCommandMode();//set up gui for command mode initially
 
-        GUISetCommandMode();//set up gui for command mode initially
 
-
-        mDisconnectTimeoutTask = new Runnable()
-        {
+        mDisconnectTimeoutTask = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 dismissProgressDialog();
                 showErrorDialog(R.string.error, R.string.discon_timeout_message);
             }
@@ -362,78 +306,7 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
         newadapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, values);
         currentView.setAdapter(newadapter);
-
-
-//        data from shared preference
-
-//        ListView currentView = (ListView) findViewById(R.id.currentList);
-//
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        SharedPreferences.Editor editor = preferences.edit();
-//
-//        Set<String> set = preferences.getStringSet("key", null);
-//
-//        values = new ArrayList<String>(set);
-
-
-//        set.addAll(values);
-//        editor.putStringSet("key", set);
-//        editor.commit();
-
-//        newadapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_list_item_1, android.R.id.text1, values);
-//
-//
-//        currentView.setAdapter(newadapter);
-//        initialiseListviewListener(currentView);
-//
-//
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                auto_connect();
-            }
-        }, 8000);*/
     }
-
-    private void auto_connect() {
-        for (int i = 0; i < values.size(); i++) {
-            mCurrentDeviceName = values.get(i);
-            if(mDeviceList.findDeviceWithName(mCurrentDeviceName) != null) {
-
-                showToast("work at here", Toast.LENGTH_SHORT);
-
-                if (!mConnecting) {
-                    mConnecting = true;
-
-                    stopScan();
-                    Log.d(TAG, "Connecting to BLE device " + mCurrentDeviceName);
-                    mZentriOSBLEManager.connect(mCurrentDeviceName);
-                    Log.d(TAG,"dfasfasdfasdfasdfasdfadsfdsafa" + mCurrentDeviceName);
-
-                    mHandler.postDelayed(mConnectTimeoutTask, CONNECT_TIMEOUT_MS);
-                }
-            }
-        }
-    }
-
-    private void startb(){
-        startc();
-    }
-
-    private void startc(){
-        Intent intent = new Intent(this, MyService.class);
-        startService(intent);
-    }
-
-    public void auto_photo(){
-        Log.d(TAG, "SDFADSFASDFASFASFASFASFA   auto_photo");
-        String dataToSend = "*gn#";
-        mZentriOSBLEManager.writeData(dataToSend);
-        Log.d(TAG, "Sent: " + dataToSend);
-        // try{ Thread.sleep(10000); }catch(InterruptedException e){ }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -460,17 +333,9 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
     protected void onStart()
     {
         super.onStart();
-
         mDeviceList.clear();
         mConnected = false;
         mConnecting = false;
-        Intent intent1 = new Intent(this, MyService.class);
-        bindService(intent1, serviceConnection, Context.BIND_AUTO_CREATE);
-
-        Intent intent = new Intent(this, ZentriOSBLEService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
-        mLocalBroadcastManager.registerReceiver(mBroadcastReceiver, mReceiverIntentFilter);
     }
 
     @Override
@@ -492,8 +357,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
         cancelConnectTimeout();
         dismissConnectDialog();
         if (bound) {
-            myService.setCallbacks(null); // unregister
-            unbindService(serviceConnection);
             bound = false;
         }
         if (mBound)
@@ -502,7 +365,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
             unbindService(mConnection);
             mBound = false;
         }
-
         super.onStop();
     }
 
@@ -510,109 +372,9 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
     protected void onDestroy()
     {
         super.onDestroy();
-
         stopService(new Intent(this, ZentriOSBLEService.class));
     }
 
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            // cast the IBinder and get MyService instance
-            MyService.LocalBinder binder = (MyService.LocalBinder) service;
-            myService = binder.getService();
-            bound = true;
-            myService.setCallbacks(MainActivity2.this); // register
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            bound = false;
-        }
-    };
-
-    /*
-    LG:  Background service run this algorithm
-     */
-    @Override
-    public void doSomething() {
-        // try{ Thread.sleep(3000); }catch(InterruptedException e){ }
-        Timer mTimer = new Timer();
-        mTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        ChooseAndConnect(); // do your work right here
-                    }
-                });
-            }
-        }, 20000, 20000);                           //scan time
-//    }, 20, 20);                           //scan time
-    }
-
-    //LG: iterate the bluetooth device list and choose the valid device name
-    private void ChooseAndConnect() {
-        startScan();
-        int Len = mDeviceList.count();
-        for(int i = 0; i < Len; i++) {
-            String name = mDeviceList.get(i);
-            if (ValidDevice.contains(name)) {    //if it has been 2000 since last connected, connected.
-                if(TimeTable.containsKey(name)) {
-                    long time = System.currentTimeMillis();
-                    long lasttime = TimeTable.get(name);
-                    if (lasttime - time > 2000) {
-                        TimeTable.put(name, time);
-                        auto(name);
-                    }
-                }
-                else {
-                    TimeTable.put(name, System.currentTimeMillis());
-                    auto(name);
-                }
-            }
-        }
-    }
-
-    //LG: connect to the specific device (chose by name)
-    private void auto(String name){
-        // while (!mConnecting) {
-        stopScan();
-        if(mDeviceList.findDeviceWithName(name) != null) {
-            Log.d(TAG, "Connecting to BLE device " + name);
-            mCurrentDeviceName = name;
-            mZentriOSBLEManager.connect(mCurrentDeviceName);
-            // showConnectingDialog(view.getContext());
-            mHandler.postDelayed(mConnectTimeoutTask, CONNECT_TIMEOUT_MS);
-            mConnecting = true;
-            Log.d(TAG,"SDFADSFASDFASFASFASFASFA   111");
-        }
-        //    }
-
-        Log.d(TAG, "SDFADSFASDFASFASFASFASFA   connected");
-        while(mZentriOSBLEManager == null || !mZentriOSBLEManager.isConnected()) {
-
-        }
-        if (mZentriOSBLEManager != null && mZentriOSBLEManager.isConnected()) {
-            Log.d(TAG, "SDFADSFASDFASFASFASFASFA   entered");
-            mCurrentMode = ZentriOSBLEManager.MODE_STREAM;
-            mZentriOSBLEManager.setMode(mCurrentMode);
-            Log.d(TAG, "SDFADSFASDFASFASFASFASFA   mode");
-            String dataToSend = "*gn#";
-
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    auto_photo();
-                }
-            }, 4500);
-            //try{ Thread.sleep(3000); }catch(InterruptedException e){ }
-            //auto_photo();
-
-        }
-        Log.d(TAG, "SDFADSFASDFASFASFASFASFA   out");
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -658,36 +420,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
         mDeviceList = new DeviceList(adapter, deviceListView);
     }
 
-    private void initServiceConnection()
-    {
-        mConnection = new ServiceConnection()
-        {
-            @Override
-            public void onServiceConnected(ComponentName className, IBinder service)
-            {
-                ZentriOSBLEService.LocalBinder binder = (ZentriOSBLEService.LocalBinder) service;
-                mService = binder.getService();
-                mBound = true;
-
-                mZentriOSBLEManager = mService.getManager();
-                if(!mZentriOSBLEManager.isInitialised())
-                {
-                    startBLEEnableIntent();
-                }
-                else
-                {
-                    startScan();
-                }
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName arg0)
-            {
-                mBound = false;
-            }
-        };
-    }
-
     private void initBroadcastReceiver()
     {
         mBroadcastReceiver = new BroadcastReceiver()
@@ -697,9 +429,7 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
             {
                 // Get extra data included in the Intent
                 String action = intent.getAction();
-
                 Log.d(TAG, "Received intent " + intent);
-
                 switch (action)
                 {
                     case ZentriOSBLEService.ACTION_SCAN_RESULT:
@@ -743,8 +473,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                         Log.d(TAG, "Command " + command + " sent");
                         break;
 
-
-
                     case ZentriOSBLEService.ACTION_COMMAND_RESULT:
                         handleCommandResponse(intent);
                         break;
@@ -778,9 +506,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                         if (text.equals("N")) {
                             break;
                         }
-
-
-
                         temp = text;
 
                         if (temp.contains(":")) {
@@ -790,53 +515,7 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                             testObject.put("NAME", mCurrentDeviceName);
                             testObject.saveEventually();
                         }
-
                         Log.d(TAG, "text = : " + text);
-
-//                        if(mRecording) {
-//                            writeLog(text);
-//                            if (count_bytes == 0) {
-//                                val = Integer.parseInt(text);
-//                                len_image = val;
-//                                count_bytes++;
-//                            }
-//                            else if (count_bytes == 1) {
-//                                val = Integer.parseInt(text);
-//                                len_image += val*256;
-//                                imBytesSplit = new byte[2*len_image];
-//                                count_bytes++;
-//                                header_done = true;
-//                            }
-//                            else {
-//                                byte[] block = text.getBytes(Charset.forName("UTF-8"));
-//                                //byte[] block = ZentriOSBLEService.getByteData(intent);
-//                                System.arraycopy(block,0,imBytesSplit,count_bytes-2,block.length);
-//                                    /*for (int ii=0;ii<block.length;ii++) {
-//                                        imBytes[count_bytes-2+ii] = block[ii];
-//                                    }*/
-//                                count_bytes += block.length;
-//                                //imBytes[count_bytes-2] = (byte) val;
-//                            }
-//
-//                            if (count_bytes < len_image*2) mZentriOSBLEManager.writeData("0");
-//
-//                            //count_bytes++;
-//
-//                            if (count_bytes>=(2*len_image) && header_done) {
-//                                imBytes = new byte[len_image];
-//                                for (int ii=0;ii<len_image;ii++) {
-//                                    imBytes[ii] = (byte) (imBytesSplit[2*ii] + (imBytesSplit[(2*ii)+1]*16));
-//                                }
-//                                saveImage(imBytes);
-//                                mToggleIm.setChecked(false);
-//                                doStopRecording();
-//                                stopRecording();
-//                            }
-//                        }
-
-
-//                                String dataToSend = "*gi#";
-//                                mZentriOSBLEManager.writeData(dataToSend);
 
                             if (gi == true) {
                                 String dataToSend = "*ai#";
@@ -848,11 +527,8 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                                 mZentriOSBLEManager.writeData(dataToSend);
                                 gi = true;
                             }
-
                         Log.d(TAG, "Bytes: " + count_bytes);
-                        //}
                         break;
-
                     case ZentriOSBLEService.ACTION_BINARY_DATA_READ:
                         byte[] block = ZentriOSBLEService.getBinaryData(intent);
                         if(mRecording) {
@@ -890,10 +566,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                                 count_bytes += block.length;
                             }
                         }
-
-                        //if (count_bytes < len_image) mZentriOSBLEManager.writeData("0");
-                        //mZentriOSBLEManager.writeData("0");
-
                         if (count_bytes>2 && imBytes[count_bytes-2]==-1 && imBytes[count_bytes-1]==-39) {
                             //if (count_bytes>=(len_image) && header_done) {
                             saveImage(imBytes);
@@ -962,16 +634,13 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
             }
         };
     }
+    //check and connect every 1 hour (Christina)
     public void scheduleAlarm() {
-        // Construct an intent that will execute the AlarmReceiver
         Intent intent = new Intent(getApplicationContext(), myAlarmReceiver.class);
-        // Create a PendingIntent to be triggered when the alarm goes off
         final PendingIntent pIntent = PendingIntent.getBroadcast(this, myAlarmReceiver.REQUEST_CODE,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
         long firstMillis = System.currentTimeMillis(); // alarm is set right away
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
-        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
                 AlarmManager.INTERVAL_HOUR, pIntent);
     }
@@ -992,12 +661,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
         mReceiverIntentFilter.addAction(ZentriOSBLEService.ACTION_STRING_DATA_READ);
         mReceiverIntentFilter.addAction(ZentriOSBLEService.ACTION_BINARY_DATA_READ);
         mReceiverIntentFilter.addAction(ZentriOSBLEService.ACTION_MODE_WRITE);
-    }
-
-    private void startBLEEnableIntent()
-    {
-        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(enableBtIntent, BLE_ENABLE_REQ_CODE);
     }
 
     private void initialiseListviewListener(ListView listView)
@@ -1028,7 +691,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
 
     private void startScan()
     {
-
         if (mZentriOSBLEManager != null)
         {
             Toast.makeText(getApplicationContext(),"Manager is not null",Toast.LENGTH_LONG).show();
@@ -1038,7 +700,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
                     mZentriOSBLEManager.startScan();
                 }
             });
-            //startProgressBar();
             disableScanButton();
             mHandler.postDelayed(mStopScanTask, SCAN_PERIOD);
         }
@@ -1049,7 +710,6 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
     {
         if (mZentriOSBLEManager != null && mZentriOSBLEManager.stopScan())
         {
-            //stopProgressBar();
             enableScanButton();
         }
     }
@@ -1065,23 +725,11 @@ public class MainActivity2 extends Activity implements com.adherence.adherence.S
         mDeviceList.add(mCurrentDeviceName);
         mCurrentMode = ZentriOSBLEManager.MODE_STREAM;
         x = mZentriOSBLEManager.setMode(mCurrentMode);
-//
-//
 //        Log.d(TAG, "Mode set to: " + mCurrentMode);
-//
         Toast.makeText(getApplicationContext(), "here!", Toast.LENGTH_LONG).show();
 
 //        String dataToSend = "*gn#";
 //        mZentriOSBLEManager.writeData(dataToSend);
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-//                auto(mCurrentDeviceName);
-                auto_photo();
-            }
-        }, 2500);
     }
 
     private void enableScanButton()

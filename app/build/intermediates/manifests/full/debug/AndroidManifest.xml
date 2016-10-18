@@ -41,7 +41,14 @@
         </activity>
 
         <receiver android:name="com.adherence.adherence.NotificationReceiver" />
+        <receiver
+            android:name="com.adherence.adherence.myAlarmReceiver"
+            android:process=":remote" >
+        </receiver>
 
+        <service
+            android:name="com.adherence.adherence.connectService"
+            android:exported="false" />
         <service android:name="com.adherence.adherence.NotificationService" />
 
         <activity
