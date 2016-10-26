@@ -149,7 +149,6 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onScanResult(String deviceName, String address)
             {
                 Log.d(TAG, "onScanResult");
-
                 Intent intent = new Intent(ACTION_SCAN_RESULT);
                 intent.putExtra(EXTRA_DATA, deviceName);
                 mBroadcastManager.sendBroadcast(intent);
@@ -165,12 +164,9 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onConnected(String deviceName, int services)
             {
                 Log.d(TAG, "onConnected");
-
                 Intent intent = new Intent(ACTION_CONNECTED);
-
                 intent.putExtra(EXTRA_NAME, deviceName);
                 intent.putExtra(EXTRA_DATA, services);
-
                 mBroadcastManager.sendBroadcast(intent);
             }
 
@@ -178,7 +174,6 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onDisconnected()
             {
                 Log.d(TAG, "onDisconnected");
-
                 Intent intent = new Intent(ACTION_DISCONNECTED);
                 mBroadcastManager.sendBroadcast(intent);
             }
@@ -187,7 +182,6 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onModeWritten(int mode)
             {
                 Log.d(TAG, "onModeWritten");
-
                 Intent intent = new Intent(ACTION_MODE_WRITE);
                 intent.putExtra(EXTRA_MODE, mode);
                 mBroadcastManager.sendBroadcast(intent);
@@ -197,7 +191,6 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onModeRead(int mode)
             {
                 Log.d(TAG, "onModeRead");
-
                 Intent intent = new Intent(ACTION_MODE_READ);
                 intent.putExtra(EXTRA_MODE, mode);
                 mBroadcastManager.sendBroadcast(intent);
@@ -207,7 +200,6 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onStringDataWritten(String data)
             {
                 Log.d(TAG, "onStringDataWritten - " + data);
-
                 Intent intent = new Intent(ACTION_STRING_DATA_WRITE);
                 intent.putExtra(EXTRA_DATA, data);
                 mBroadcastManager.sendBroadcast(intent);
@@ -217,7 +209,6 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onBinaryDataWritten(byte[] data)
             {
                 Log.d(TAG, "onBinaryDataWritten - Wrote " + data.length + " bytes");
-
                 Intent intent = new Intent(ACTION_BINARY_DATA_WRITE);
                 intent.putExtra(EXTRA_DATA, data);
                 mBroadcastManager.sendBroadcast(intent);
@@ -247,7 +238,6 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onCommandSent(int ID, Command command)
             {
                 Log.d(TAG, "onCommandSent");
-
                 Intent intent = new Intent(ACTION_COMMAND_SENT);
                 intent.putExtra(EXTRA_ID, ID);
                 intent.putExtra(EXTRA_COMMAND, command);
@@ -258,17 +248,14 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onCommandResult(int ID, Command command, Result result)
             {
                 Log.d(TAG, "onCommandResult");
-
                 Intent intent = new Intent(ACTION_COMMAND_RESULT);
                 intent.putExtra(EXTRA_COMMAND, command);
-
                 if (result != null)
                 {
                     intent.putExtra(EXTRA_ID, ID);
                     intent.putExtra(EXTRA_RESPONSE_CODE, result.getResponseCode());
                     intent.putExtra(EXTRA_DATA, result.getData());
                 }
-
                 mBroadcastManager.sendBroadcast(intent);
             }
 
@@ -278,9 +265,7 @@ public class ZentriOSBLEService extends Service implements Serializable
                 Intent intent = new Intent(ACTION_ERROR);
                 intent.putExtra(EXTRA_ERROR, error);
                 mBroadcastManager.sendBroadcast(intent);
-
                 Log.d(TAG, "onError - " + error);
-
             }
         };
     }

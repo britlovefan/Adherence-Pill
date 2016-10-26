@@ -95,7 +95,6 @@ public class MainActivity2 extends Activity  {
     private ToggleButton mModeButton;
     private int mCurrentMode;
     private Button mSendTextButton;
-    private Button AutoPhoto;
     private EditText mTextToSendBox;
     private TextView mReceivedDataTextBox;
     private ScrollView mScrollView;
@@ -362,7 +361,7 @@ public class MainActivity2 extends Activity  {
             @Override
             public void onClick(View v) {
                 mDeviceList.clear();
-                //pass the arrayo of device name
+                //pass the arraylist of device name
                 scheduleAlarm(values);
             }
         });
@@ -528,9 +527,7 @@ public class MainActivity2 extends Activity  {
 //                                doStopRecording();
 //                                stopRecording();
 //                            }
-//                        }
-
-
+//
 //                                String dataToSend = "*gi#";
 //                                mZentriOSBLEManager.writeData(dataToSend);
 
@@ -692,7 +689,7 @@ public class MainActivity2 extends Activity  {
                 mCurrentDeviceName = mDeviceList.get(position);
                 if(!values.contains(mCurrentDeviceName)) values.add(mCurrentDeviceName);
                 //add to the database
-                mydb.addDevice("christina", mCurrentDeviceName);
+                //mydb.addDevice("christina", mCurrentDeviceName);
                 newadapter.notifyDataSetChanged();
             }
         });

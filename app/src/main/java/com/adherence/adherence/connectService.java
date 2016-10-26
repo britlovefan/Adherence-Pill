@@ -9,6 +9,8 @@ import android.util.Log;
 
 import com.zentri.zentri_ble_command.ZentriOSBLEManager;
 
+import java.util.ArrayList;
+
 /**
  * Created by Christina on 2016/10/16.
  */
@@ -17,16 +19,30 @@ public class connectService extends IntentService {
     private ServiceConnection mConnection;
     private boolean mBound = false;
     private ZentriOSBLEManager mZentriOSBLEManager;
+    private ArrayList<String> mValidDeviceList;
     public connectService(){
         super("connectService");
+        startService(new Intent(this, ZentriOSBLEService.class));
     }
     @Override
     protected void onHandleIntent(Intent intent){
         //Task
-        startService(new Intent(this, ZentriOSBLEService.class));
+        Log.v("Start","Background");
+        //startService(new Intent(this, ZentriOSBLEService.class));
+        mValidDeviceList = intent.getStringArrayListExtra("DEVICETOSERVICE");
         initServiceConnection();
 
+        /*if(mZentriOSBLEManager==null){
+            Log.v("Manager","null");
+        }*/
+        Log.v("list",mValidDeviceList.get(0));
+
+        for(String s:mValidDeviceList){
+            mZentriOSBLEManager.connect(s);
+        }
         Log.v("connect Service", "runs correctly!");
+        stopService(new Intent(this, ZentriOSBLEService.class));
+        Log.v("disconnect Service", "disconnect correctly!");
     }
 
     private void initServiceConnection()
