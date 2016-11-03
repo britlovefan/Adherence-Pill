@@ -29,9 +29,13 @@ public class connectService extends IntentService {
         Log.v("Start","Background");
         mValidDeviceList = intent.getStringArrayListExtra("DEVICETOSERVICE");
         initServiceConnection();
-        mZentriOSBLEManager = new ZentriOSBLEManager();
+        //mZentriOSBLEManager = new ZentriOSBLEManager();
+
         startService(new Intent(this, ZentriOSBLEService.class));
         //check whether the deviceList has been passed correctly
+        if(mBound==false){
+            Log.v("Service","Not start");
+        }
         Log.v("list",mValidDeviceList.get(0));
         //Trying to connect all the device
         for(String s:mValidDeviceList) {

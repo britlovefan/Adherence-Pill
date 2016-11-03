@@ -139,7 +139,8 @@ public class MainActivity2 extends Activity  {
         initServiceConnection();
         initBroadcastReceiver();
         initReceiverIntentFilter();
-        //Try to initiate the alarm and the
+        //Try to initiate the alarm and th
+
         startService(new Intent(this, ZentriOSBLEService.class));
         mHandler = new Handler();
         mStopScanTask = new Runnable() {
@@ -256,6 +257,7 @@ public class MainActivity2 extends Activity  {
             }
         });
         mReceivedDataTextBox = (TextView) findViewById(R.id.receivedDataBox);
+
         mScrollView = (ScrollView) findViewById(R.id.scroll_view);
         GUISetCommandMode();//set up gui for command mode initially
         mDisconnectTimeoutTask = new Runnable() {
@@ -394,16 +396,14 @@ public class MainActivity2 extends Activity  {
             }
         };
     }
-
+    //receive message from ZentriOSBLEService and perform actions
     private void initBroadcastReceiver() {
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 // Get extra data included in the Intent
                 String action = intent.getAction();
-
                 Log.d(TAG, "Received intent " + intent);
-
                 switch (action) {
                     case ZentriOSBLEService.ACTION_SCAN_RESULT:
                         addDeviceToList(ZentriOSBLEService.getData(intent));
@@ -412,12 +412,10 @@ public class MainActivity2 extends Activity  {
                     case ZentriOSBLEService.ACTION_CONNECTED:
                         String deviceName = ZentriOSBLEService.getDeviceName(intent);
                         int services = ZentriOSBLEService.getIntData(intent);
-
                         cancelConnectTimeout();
                         dismissConnectDialog();
 
                         //RSSI = intent.getShortExtra(mBroadcastReceiver.EXTRA_RSSI,Short.MIN_VALUE);
-
                         //if no truconnect services
                         if (services == ZentriOSBLEService.SERVICES_NONE ||
                                 services == ZentriOSBLEService.SERVICES_OTA_ONLY) {
@@ -427,7 +425,6 @@ public class MainActivity2 extends Activity  {
                             mConnected = true;
                             showToast("Connected to " + deviceName, Toast.LENGTH_SHORT);
                             Log.d(TAG, "Connected to " + deviceName);
-
                             startDeviceInfoActivity();
                         }
                         break;
@@ -647,6 +644,7 @@ public class MainActivity2 extends Activity  {
             }
         };
     }
+
    //schedule the alarm which runs every hour and trigger the connectService.class which deals with connection
     public void scheduleAlarm(ArrayList<String> device) {
         Intent intent = new Intent(getApplicationContext(), myAlarmReceiver.class);

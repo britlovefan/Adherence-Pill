@@ -14,6 +14,7 @@ import com.zentri.zentri_ble_command.Result;
 import com.zentri.zentri_ble_command.ZentriOSBLEManager;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ZentriOSBLEService extends Service implements Serializable
 {
@@ -68,6 +69,7 @@ public class ZentriOSBLEService extends Service implements Serializable
 
     private BLECallbacks mCallbacks;
     private LocalBroadcastManager mBroadcastManager;
+    private ArrayList<String> mDeviceList;
 
     public class LocalBinder extends Binder
     {
@@ -87,13 +89,25 @@ public class ZentriOSBLEService extends Service implements Serializable
         mBroadcastManager = LocalBroadcastManager.getInstance(this);
         initCallbacks();
         initTruconnectManager();
+
+    }
+    public void connect(ArrayList<String>list){
+        for(String i:list){
+            mZentriOSBLEManager.connect(i);
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
+        //trying to receive the arraylist
+        if(intent != null){
+            mDeviceList = intent.getStringArrayListExtra("DEVICETOSERVICE");
+            if(mDeviceList!=null) connect(mDeviceList);
+        }
         // The service is starting, due to a call to startService()
         return mStartMode;
+
     }
 
     @Override

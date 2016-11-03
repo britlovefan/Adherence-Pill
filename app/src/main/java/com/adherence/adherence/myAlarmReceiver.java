@@ -12,14 +12,16 @@ import java.util.ArrayList;
 public class myAlarmReceiver extends BroadcastReceiver {
     public static final int REQUEST_CODE = 12345;
     public static final String ACTION = "com.codepath.example.servicesdemo.alarm";
-
     // Triggered by the Alarm periodically (starts the service to run task)
     @Override
     public void onReceive(Context context, Intent intent) {
         ArrayList<String> list = (ArrayList<String>) intent.getStringArrayListExtra("DEVICE_NAME");
+        Intent ZentriService = new Intent(context, ZentriOSBLEService.class);
+        /*
         Intent i = new Intent(context, connectService.class);
-        //i.putExtra("foo", "bar");
         i.putStringArrayListExtra("DEVICETOSERVICE",list);
-        context.startService(i);
+        context.startService(i);*/
+        ZentriService.putStringArrayListExtra("DEVICETOSERVICE",list);
+        context.startService(ZentriService);
     }
 }
