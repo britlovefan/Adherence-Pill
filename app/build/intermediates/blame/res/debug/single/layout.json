@@ -52,12 +52,12 @@
         "source": "C:\\Users\\Christina\\Desktop\\499\\app\\src\\main\\res\\layout\\calendar_day.xml"
     },
     {
-        "merged": "C:\\Users\\Christina\\Desktop\\499_AndroidApp-master_Worked-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_today.xml",
-        "source": "C:\\Users\\Christina\\Desktop\\499_AndroidApp-master_Worked-master\\app\\src\\main\\res\\layout\\fragment_today.xml"
-    },
-    {
         "merged": "C:\\Users\\Christina\\Desktop\\499\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_medication.xml",
         "source": "C:\\Users\\Christina\\Desktop\\499\\app\\src\\main\\res\\layout\\fragment_medication.xml"
+    },
+    {
+        "merged": "C:\\Users\\Christina\\Desktop\\499_AndroidApp-master_Worked-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_today.xml",
+        "source": "C:\\Users\\Christina\\Desktop\\499_AndroidApp-master_Worked-master\\app\\src\\main\\res\\layout\\fragment_today.xml"
     },
     {
         "merged": "C:\\Users\\Christina\\Desktop\\499_AndroidApp-master_Worked-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_icon.xml",

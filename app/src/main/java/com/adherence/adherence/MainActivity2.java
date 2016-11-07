@@ -363,8 +363,11 @@ public class MainActivity2 extends Activity  {
             @Override
             public void onClick(View v) {
                 mDeviceList.clear();
-                //pass the arraylist of device name
+                //pass the arraylist of device name to the alarm manager and then pass to the BLEService
                 scheduleAlarm(values);
+                //try to jump to another activity
+                Intent triggerNext = new Intent(MainActivity2.this,NextActivity.class);
+                startActivity(triggerNext);
             }
         });
     }
@@ -414,7 +417,6 @@ public class MainActivity2 extends Activity  {
                         int services = ZentriOSBLEService.getIntData(intent);
                         cancelConnectTimeout();
                         dismissConnectDialog();
-
                         //RSSI = intent.getShortExtra(mBroadcastReceiver.EXTRA_RSSI,Short.MIN_VALUE);
                         //if no truconnect services
                         if (services == ZentriOSBLEService.SERVICES_NONE ||
@@ -472,11 +474,8 @@ public class MainActivity2 extends Activity  {
                             break;
                         }
 
-
                         temp = text;
-
                         if (temp.contains(":")) {
-
                             ParseObject testObject = new ParseObject("TestXZ");
                             testObject.put("TIME", temp);
                             testObject.put("NAME", mCurrentDeviceName);
@@ -685,9 +684,11 @@ public class MainActivity2 extends Activity  {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 mCurrentDeviceName = mDeviceList.get(position);
-                if(!values.contains(mCurrentDeviceName)) values.add(mCurrentDeviceName);
-                //add to the database
-                //mydb.addDevice("christina", mCurrentDeviceName);
+                if(!values.contains(mCurrentDeviceName)) {
+                    values.add(mCurrentDeviceName);
+                    //add to current database
+                    mydb.addDevice("christina", mCurrentDeviceName);
+                }
                 newadapter.notifyDataSetChanged();
             }
         });

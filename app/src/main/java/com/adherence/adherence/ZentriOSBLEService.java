@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.adherence.adherence.Connection.DBHelper;
 import com.zentri.zentri_ble_command.BLECallbacks;
 import com.zentri.zentri_ble_command.Command;
 import com.zentri.zentri_ble_command.ErrorCode;
@@ -71,6 +72,8 @@ public class ZentriOSBLEService extends Service implements Serializable
     private LocalBroadcastManager mBroadcastManager;
     private ArrayList<String> mDeviceList;
 
+    public DBHelper db;
+
     public class LocalBinder extends Binder
     {
         ZentriOSBLEService getService()
@@ -91,6 +94,7 @@ public class ZentriOSBLEService extends Service implements Serializable
         initTruconnectManager();
 
     }
+    //connect to the device in the list
     public void connect(ArrayList<String>list){
         for(String i:list){
             mZentriOSBLEManager.connect(i);
@@ -101,13 +105,21 @@ public class ZentriOSBLEService extends Service implements Serializable
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         //trying to receive the arraylist
+
         if(intent != null){
+            db = new DBHelper(this);
+            ArrayList<String> results = db.getDevice("christina");
+            connect(results);
+            /*
             mDeviceList = intent.getStringArrayListExtra("DEVICETOSERVICE");
             if(mDeviceList!=null) connect(mDeviceList);
+            if(mZentriOSBLEManager.isConnected()){
+                Log.v("Device is connected","correctly");
+            }*/
         }
+        // Try to receive the list  from the database
         // The service is starting, due to a call to startService()
         return mStartMode;
-
     }
 
     @Override
@@ -136,7 +148,6 @@ public class ZentriOSBLEService extends Service implements Serializable
     {
         // The service is no longer used and is being destroyed
         Log.d(TAG, "Destroying service");
-
         if (mZentriOSBLEManager != null)
         {
             mZentriOSBLEManager.stopScan();
@@ -177,7 +188,8 @@ public class ZentriOSBLEService extends Service implements Serializable
             @Override
             public void onConnected(String deviceName, int services)
             {
-                Log.d(TAG, "onConnected");
+                Log.d(TAG, deviceName+"onConnected");
+
                 Intent intent = new Intent(ACTION_CONNECTED);
                 intent.putExtra(EXTRA_NAME, deviceName);
                 intent.putExtra(EXTRA_DATA, services);
