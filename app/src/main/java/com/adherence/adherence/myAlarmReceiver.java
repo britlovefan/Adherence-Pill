@@ -17,10 +17,6 @@ public class myAlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         ArrayList<String> list = (ArrayList<String>) intent.getStringArrayListExtra("DEVICE_NAME");
         Intent ZentriService = new Intent(context, ZentriOSBLEService.class);
-        /*
-        Intent i = new Intent(context, connectService.class);
-        i.putStringArrayListExtra("DEVICETOSERVICE",list);
-        context.startService(i);*/
         ZentriService.putStringArrayListExtra("DEVICETOSERVICE",list);
         context.startService(ZentriService);
     }

@@ -206,7 +206,6 @@ public class MainActivity2 extends Activity  {
                         mZentriOSBLEManager.writeData(dataToSend);
                         Log.d(TAG, "Sent: " + dataToSend);
 
-
                     } else if (data.equals("C")) { // TAKE IMAGE
                         dataToSend = "*C#";
                         mZentriOSBLEManager.writeData(dataToSend);
@@ -366,8 +365,9 @@ public class MainActivity2 extends Activity  {
                 //pass the arraylist of device name to the alarm manager and then pass to the BLEService
                 scheduleAlarm(values);
                 //try to jump to another activity
+                /*
                 Intent triggerNext = new Intent(MainActivity2.this,NextActivity.class);
-                startActivity(triggerNext);
+                startActivity(triggerNext);*/
             }
         });
     }
@@ -536,7 +536,6 @@ public class MainActivity2 extends Activity  {
                             mZentriOSBLEManager.writeData(dataToSend);
                             gi = true;
                         }
-
                         Log.d(TAG, "Bytes: " + count_bytes);
                         //}
                         break;

@@ -15,7 +15,9 @@ import com.zentri.zentri_ble_command.Result;
 import com.zentri.zentri_ble_command.ZentriOSBLEManager;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ZentriOSBLEService extends Service implements Serializable
 {
@@ -73,6 +75,8 @@ public class ZentriOSBLEService extends Service implements Serializable
     private ArrayList<String> mDeviceList;
 
     public DBHelper db;
+    public Result dataResult = null;
+    private boolean connected = false;
 
     public class LocalBinder extends Binder
     {
@@ -96,26 +100,86 @@ public class ZentriOSBLEService extends Service implements Serializable
     }
     //connect to the device in the list
     public void connect(ArrayList<String>list){
-        for(String i:list){
-            mZentriOSBLEManager.connect(i);
+        for(String deviveName:list){
+            mZentriOSBLEManager.connect(deviveName);
+            //make sure that the device is actually connected before set time
+            Thread t = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        //check if connected!
+                        while (!mZentriOSBLEManager.isConnected()) {
+                            Thread.sleep(1000);
+                        }
+                        setTime();
+                    } catch (Exception e) {
+                    }
+                }
+            };
+            t.start();
+
+            //ask for updates
+            /*
+            mZentriOSBLEManager.writeData("*gn#");
+            if(dataResult!=null) {
+                String text = dataResult.getData();
+                if(text=="N"){
+                    mZentriOSBLEManager.disconnect(true);
+                    Log.v("No new data","disconnect device");
+                }
+            }
+            else{
+                Log.v("ERROR","no response from bottles");
+                break;
+            }*/
         }
     }
-
+    //send and set the current time to the bottle every time we connect to the bottle
+    public void setTime(){
+        Calendar c = Calendar.getInstance();
+        //004814107032016
+        //14:48:00; March 7, 2016
+        SimpleDateFormat sdf = new SimpleDateFormat("ssmmHHddmmyyyy");
+        String strDate = sdf.format(c.getTime());
+        String timeCommand = "*st" + strDate + "#";
+        mZentriOSBLEManager.writeData(timeCommand);
+        Log.v("Set Time correctly!",strDate);
+        /*
+        timeNow = Calendar.getInstance();
+        int second = timeNow.get(Calendar.SECOND);
+        int minute = timeNow.get(Calendar.MINUTE);
+        int hour = timeNow.get(Calendar.HOUR_OF_DAY);
+        int dayOfWeek = timeNow.get(Calendar.DAY_OF_WEEK);
+        int dayOfMonth = timeNow.get(Calendar.DAY_OF_MONTH);
+        int month = timeNow.get(Calendar.MONTH);
+        int year = timeNow.get(Calendar.YEAR);
+       //String rtc_data = Integer.toString(second) + Integer.toString(minute) + Integer.toString(hour) + Integer.toString(dayOfWeek) + Integer.toString(dayOfMonth) + Integer.toString(month) + Integer.toString(year);
+        String rtc_data = String.format("%02d%02d%02d%d%02d%02d%04d", second, minute, hour, dayOfWeek, dayOfMonth, month + 1, year);
+         dataToSend = "*T" + rtc_data + "#";
+         */
+    }
+    private void startDeviceInfoActivity() {
+        /*
+        mZentriOSBLEManager.setMode(ZentriOSBLEManager.MODE_COMMAND_REMOTE);
+        mZentriOSBLEManager.setSystemCommandMode(CommandMode.MACHINE);*/
+        setTime();
+    }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         //trying to receive the arraylist
 
         if(intent != null){
+            /*
             db = new DBHelper(this);
             ArrayList<String> results = db.getDevice("christina");
             connect(results);
-            /*
+            */
             mDeviceList = intent.getStringArrayListExtra("DEVICETOSERVICE");
             if(mDeviceList!=null) connect(mDeviceList);
             if(mZentriOSBLEManager.isConnected()){
                 Log.v("Device is connected","correctly");
-            }*/
+            }
         }
         // Try to receive the list  from the database
         // The service is starting, due to a call to startService()
@@ -188,8 +252,9 @@ public class ZentriOSBLEService extends Service implements Serializable
             @Override
             public void onConnected(String deviceName, int services)
             {
-                Log.d(TAG, deviceName+"onConnected");
-
+                Log.d(TAG, deviceName+" onConnected");
+                connected = true;
+                //startDeviceInfoActivity();
                 Intent intent = new Intent(ACTION_CONNECTED);
                 intent.putExtra(EXTRA_NAME, deviceName);
                 intent.putExtra(EXTRA_DATA, services);
@@ -244,7 +309,6 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onStringDataRead(String data)
             {
                 Log.d(TAG, "onDataRead - " + data);
-
                 Intent intent = new Intent(ACTION_STRING_DATA_READ);
                 intent.putExtra(EXTRA_DATA, data);
                 mBroadcastManager.sendBroadcast(intent);
@@ -276,11 +340,13 @@ public class ZentriOSBLEService extends Service implements Serializable
                 Log.d(TAG, "onCommandResult");
                 Intent intent = new Intent(ACTION_COMMAND_RESULT);
                 intent.putExtra(EXTRA_COMMAND, command);
+                //added code
                 if (result != null)
                 {
                     intent.putExtra(EXTRA_ID, ID);
                     intent.putExtra(EXTRA_RESPONSE_CODE, result.getResponseCode());
                     intent.putExtra(EXTRA_DATA, result.getData());
+                    dataResult = result;
                 }
                 mBroadcastManager.sendBroadcast(intent);
             }
