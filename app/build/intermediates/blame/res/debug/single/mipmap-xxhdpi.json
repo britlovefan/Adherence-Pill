@@ -1,10 +1,18 @@
 [
     {
+        "merged": "C:\\Users\\Administrator\\Documents\\GitHub\\Adherence-Pill\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\reminder.png",
+        "source": "C:\\Users\\Administrator\\Documents\\GitHub\\Adherence-Pill\\app\\src\\main\\res\\mipmap-xxhdpi\\reminder.png"
+    },
+    {
         "merged": "C:\\Users\\Administrator\\Desktop\\Adherence-Pill-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
         "source": "C:\\Users\\Administrator\\Desktop\\Adherence-Pill-master\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     },
     {
         "merged": "C:\\Users\\Administrator\\Desktop\\Adherence-Pill-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\reminder.png",
         "source": "C:\\Users\\Administrator\\Desktop\\Adherence-Pill-master\\app\\src\\main\\res\\mipmap-xxhdpi\\reminder.png"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Documents\\GitHub\\Adherence-Pill\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
+        "source": "C:\\Users\\Administrator\\Documents\\GitHub\\Adherence-Pill\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     }
 ]
