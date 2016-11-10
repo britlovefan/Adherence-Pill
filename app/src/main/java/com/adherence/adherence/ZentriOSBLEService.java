@@ -76,7 +76,7 @@ public class ZentriOSBLEService extends Service implements Serializable
 
     public DBHelper db;
     public Result dataResult = null;
-    private boolean connected = false;
+    private String response;
 
     public class LocalBinder extends Binder
     {
@@ -109,9 +109,14 @@ public class ZentriOSBLEService extends Service implements Serializable
                     try {
                         //check if connected!
                         while (!mZentriOSBLEManager.isConnected()) {
-                            Thread.sleep(1000);
+                            Thread.sleep(500);
                         }
                         setTime();
+                        mZentriOSBLEManager.setReceiveMode(com.zentri.zentri_ble.BLECallbacks.ReceiveMode.STRING);
+                        mZentriOSBLEManager.writeData("*gn#");
+                        if(response=="N"){
+                            Log.v("Bottles correctly","But");
+                        }
                     } catch (Exception e) {
                     }
                 }
@@ -253,7 +258,6 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onConnected(String deviceName, int services)
             {
                 Log.d(TAG, deviceName+" onConnected");
-                connected = true;
                 //startDeviceInfoActivity();
                 Intent intent = new Intent(ACTION_CONNECTED);
                 intent.putExtra(EXTRA_NAME, deviceName);
@@ -309,6 +313,8 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onStringDataRead(String data)
             {
                 Log.d(TAG, "onDataRead - " + data);
+                //add
+                response = data;
                 Intent intent = new Intent(ACTION_STRING_DATA_READ);
                 intent.putExtra(EXTRA_DATA, data);
                 mBroadcastManager.sendBroadcast(intent);
