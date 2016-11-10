@@ -64,7 +64,7 @@ public class MainActivity2 extends Activity  {
 
     private final boolean NO_TX_NOTIFY_DISABLE = false;
 
-    private ProgressDialog mConnectProgressDialog;
+    private ProgressDialog mConnectProgressDialog;//I try to revise
     private DeviceList mDeviceList;
     private Button mScanButton;
     private Button mFinishButton;
