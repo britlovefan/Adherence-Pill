@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-#Thu Nov 10 09:36:56 CST 2016
+#Wed Nov 09 10:16:22 CST 2016
 base.0=C\:\\Users\\Christina\\Desktop\\499\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
-=======
-#Thu Nov 10 23:23:33 CST 2016
-base.0=C\:\\Users\\Administrator\\Desktop\\Adherence-Pill-master\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
->>>>>>> b2fefa738ae7c6e4da3b7c5ac298286c8007d4af
 renamed.0=classes.dex
-file.0=C\:\\Users\\Administrator\\Desktop\\Adherence-Pill-master\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex
+file.0=C\:\\Users\\Christina\\Desktop\\499\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex
