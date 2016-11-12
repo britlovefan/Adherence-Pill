@@ -114,6 +114,7 @@ public class ZentriOSBLEService extends Service implements Serializable
                         setTime();
                         mZentriOSBLEManager.setReceiveMode(com.zentri.zentri_ble.BLECallbacks.ReceiveMode.STRING);
                         mZentriOSBLEManager.writeData("*gn#");
+                        //
                         if(response=="N"){
                             Log.v("Bottles correctly","But");
                         }
