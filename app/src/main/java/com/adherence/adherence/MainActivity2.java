@@ -13,6 +13,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -66,8 +68,10 @@ public class MainActivity2 extends Activity  {
 
     private ProgressDialog mConnectProgressDialog;
     private DeviceList mDeviceList;
+    private DeviceList mDeviceList2;
     private Button mScanButton;
     private Button mFinishButton;
+    private Button mDSButton;
 
     private Handler mHandler;
     private Runnable mStopScanTask;
@@ -102,6 +106,7 @@ public class MainActivity2 extends Activity  {
     private ToggleButton mToggleIm;
     private Button mShowIm;
     private ImageView imView;
+    private ListView currentView;
 
     private ProgressDialog mDisconnectDialog;
     private boolean mDisconnecting = false;
@@ -119,7 +124,9 @@ public class MainActivity2 extends Activity  {
     private boolean header_done = false;
 
     private String temp = "";
+    private String tempp = "dfsds";
     private Boolean gi = false;
+    private Boolean delete_save=false;
 
     Calendar timeNow;
 
@@ -127,12 +134,26 @@ public class MainActivity2 extends Activity  {
     ArrayList<String> values = new ArrayList<String>();
     ArrayAdapter<String> newadapter;
 
+
     DBHelper mydb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        SQLiteDatabase testdb = openOrCreateDatabase("test.db", Context.MODE_PRIVATE, null);
+        testdb.execSQL("CREATE TABLE IF NOT EXISTS DeviceTable (name VARCHAR PRIMARY KEY)");
+        //testdb.delete("DeviceTable"," name = ? ", new String[]{"dfsds"});
+        Cursor c = testdb.rawQuery("SELECT * FROM DeviceTable", null);
+        while (c.moveToNext()) {
+            String d_name = c.getString(c.getColumnIndex("name"));
+            values.add(d_name);
+        }
+        c.close();
+        testdb.close();
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         initScanButton();
         initDeviceList();
         initBroadcastManager();
@@ -267,12 +288,29 @@ public class MainActivity2 extends Activity  {
             }
         };
     //add the valid device of the user to store to database.
-        ListView currentView = (ListView) findViewById(R.id.currentList);
+        currentView = (ListView) findViewById(R.id.currentList);
         ListView scanView = (ListView) findViewById(R.id.scanList);
         initialiseListviewListener(scanView);
         newadapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, values);
         currentView.setAdapter(newadapter);
+        currentView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                if(delete_save==true) {
+                    String deleteDeviceName = newadapter.getItem(position);
+                    SQLiteDatabase testdb = openOrCreateDatabase("test.db", Context.MODE_PRIVATE, null);
+                    testdb.delete("DeviceTable"," name = ? ", new String[]{deleteDeviceName});
+                    testdb.close();
+                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    values.remove(deleteDeviceName);
+                    newadapter.notifyDataSetChanged();
+                }
+
+            }
+        });
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -368,6 +406,22 @@ public class MainActivity2 extends Activity  {
                 /*
                 Intent triggerNext = new Intent(MainActivity2.this,NextActivity.class);
                 startActivity(triggerNext);*/
+            }
+        });
+        mDSButton = (Button) findViewById(R.id.delete_save);
+        mDSButton.setText("Delete");
+        mDSButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(delete_save==false){
+                    mDSButton.setText("Save");
+                    delete_save=true;
+
+                }
+                else{
+                    mDSButton.setText("Delete");
+                    delete_save=false;
+                }
             }
         });
     }
@@ -684,6 +738,12 @@ public class MainActivity2 extends Activity  {
                                     int position, long id) {
                 mCurrentDeviceName = mDeviceList.get(position);
                 if(!values.contains(mCurrentDeviceName)) {
+                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    SQLiteDatabase testdb = openOrCreateDatabase("test.db", Context.MODE_PRIVATE, null);
+                    testdb.execSQL("INSERT INTO DeviceTable VALUES (?)", new Object[]{mCurrentDeviceName});
+                    testdb.close();
+                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     values.add(mCurrentDeviceName);
                     //add to current database
                     mydb.addDevice("christina", mCurrentDeviceName);

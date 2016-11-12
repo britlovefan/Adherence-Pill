@@ -158,7 +158,7 @@ public class ZentriOSBLEService extends Service implements Serializable
         int dayOfWeek = timeNow.get(Calendar.DAY_OF_WEEK);
         int dayOfMonth = timeNow.get(Calendar.DAY_OF_MONTH);
         int month = timeNow.get(Calendar.MONTH);
-        int year = timeNow.get(Calendar.YEAR);
+        int year = timeNow.get(Calendar.YEAR);0
        //String rtc_data = Integer.toString(second) + Integer.toString(minute) + Integer.toString(hour) + Integer.toString(dayOfWeek) + Integer.toString(dayOfMonth) + Integer.toString(month) + Integer.toString(year);
         String rtc_data = String.format("%02d%02d%02d%d%02d%02d%04d", second, minute, hour, dayOfWeek, dayOfMonth, month + 1, year);
          dataToSend = "*T" + rtc_data + "#";
