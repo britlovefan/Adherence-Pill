@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "C:\\Users\\Christina\\Desktop\\499_AndroidApp-master_Worked-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi\\ic_launcher.png",
+        "source": "C:\\Users\\Christina\\Desktop\\499_AndroidApp-master_Worked-master\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Christina\\Desktop\\Adherence-Pill\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi\\reminder.png",
+        "source": "C:\\Users\\Christina\\Desktop\\Adherence-Pill\\app\\src\\main\\res\\mipmap-hdpi\\reminder.png"
+    },
+    {
+        "merged": "C:\\Users\\Christina\\Desktop\\499_AndroidApp-master_Worked-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi\\reminder.png",
+        "source": "C:\\Users\\Christina\\Desktop\\499_AndroidApp-master_Worked-master\\app\\src\\main\\res\\mipmap-hdpi\\reminder.png"
+    },
+    {
+        "merged": "C:\\Users\\Christina\\Desktop\\499\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi\\ic_launcher.png",
+        "source": "C:\\Users\\Christina\\Desktop\\499\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Christina\\Desktop\\Adherence-Pill\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi\\ic_launcher.png",
+        "source": "C:\\Users\\Christina\\Desktop\\Adherence-Pill\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Christina\\Desktop\\499\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi\\reminder.png",
+        "source": "C:\\Users\\Christina\\Desktop\\499\\app\\src\\main\\res\\mipmap-hdpi\\reminder.png"
+    }
+]
