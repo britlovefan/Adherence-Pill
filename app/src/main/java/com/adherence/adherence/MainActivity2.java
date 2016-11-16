@@ -378,12 +378,9 @@ public class MainActivity2 extends Activity  {
         initialiseListviewListener(deviceListView);
         mDeviceList = new DeviceList(adapter, deviceListView);
     }
-    /*To receive the IBinder, the client must create an instance of ServiceConnection and pass it to bindService().
-     */
+
     private void initServiceConnection() {
         mConnection = new ServiceConnection() {
-            /*Called when the connection with the service is established
-              calls this to deliver the IBinder returned by the service's onBind() method.*/
             @Override
             public void onServiceConnected(ComponentName className, IBinder service) {
                 ZentriOSBLEService.LocalBinder binder = (ZentriOSBLEService.LocalBinder) service;
@@ -396,10 +393,6 @@ public class MainActivity2 extends Activity  {
                     startScan();
                 }
             }
-            /*
-            The Android system calls this when the connection to the service is unexpectedly lost, such as
-             when the service has crashed or has been killed. This is not called when the client unbinds.
-             */
             @Override
             public void onServiceDisconnected(ComponentName arg0) {
                 mBound = false;

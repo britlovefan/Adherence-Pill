@@ -1,10 +1,7 @@
 package com.adherence.adherence;
 
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
@@ -78,33 +75,9 @@ public class ZentriOSBLEService extends Service implements Serializable
     private ArrayList<String> mDeviceList;
 
     public DBHelper db;
+    public Result dataResult = null;
     private String response;
-    private IntentFilter mReceiverIntentFilter;
-    private BroadcastReceiver mBroadcastReceiver;
-    private boolean newData;
-    //Create its own receiver but How do I interact with it in the loop
 
-    private void initBroadCastReceiver(){
-        mBroadcastReceiver = new BroadcastReceiver(){
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                switch (action) {
-                    case ZentriOSBLEService.ACTION_STRING_DATA_READ:
-                        String text = ZentriOSBLEService.getData(intent);
-                        Log.v("ZentriService Own","received String");
-                        if (text.equals("N")) {
-                            newData = false;
-                            break;
-                        }
-                        if(text.equals("Y")){
-                            newData = true;
-                            break;
-                        }
-                }
-            }
-        };
-    }
     public class LocalBinder extends Binder
     {
         ZentriOSBLEService getService()
@@ -114,34 +87,16 @@ public class ZentriOSBLEService extends Service implements Serializable
         }
     }
 
-   /*The system invokes this method to perform one-time setup procedures when the service is initially created
-    before it calls either onStartCommand() or onBind()). If the service is already running, this method is not called.
-    */
     @Override
     public void onCreate()
     {
         // The service is being created
         Log.d(TAG, "Creating service");
-        // Set up the
-        initReceiverIntentFilter();
-        initBroadCastReceiver();
-        registerReceiver(mBroadcastReceiver, mReceiverIntentFilter);
-
         mZentriOSBLEManager = new ZentriOSBLEManager();
         mBroadcastManager = LocalBroadcastManager.getInstance(this);
         initCallbacks();
         initTruconnectManager();
-    }
-    public void initReceiverIntentFilter() {
-        mReceiverIntentFilter = new IntentFilter();
-        mReceiverIntentFilter.addAction(ZentriOSBLEService.ACTION_SCAN_RESULT);
-        mReceiverIntentFilter.addAction(ZentriOSBLEService.ACTION_CONNECTED);
-        mReceiverIntentFilter.addAction(ZentriOSBLEService.ACTION_DISCONNECTED);
-        mReceiverIntentFilter.addAction(ZentriOSBLEService.ACTION_ERROR);
-        mReceiverIntentFilter.addAction(ZentriOSBLEService.ACTION_COMMAND_RESULT);
-        mReceiverIntentFilter.addAction(ZentriOSBLEService.ACTION_STRING_DATA_READ);
-        mReceiverIntentFilter.addAction(ZentriOSBLEService.ACTION_BINARY_DATA_READ);
-        mReceiverIntentFilter.addAction(ZentriOSBLEService.ACTION_MODE_WRITE);
+
     }
     //connect to the device in the list
     public void connect(ArrayList<String>list){
@@ -160,7 +115,6 @@ public class ZentriOSBLEService extends Service implements Serializable
                         mZentriOSBLEManager.setReceiveMode(com.zentri.zentri_ble.BLECallbacks.ReceiveMode.STRING);
                         mZentriOSBLEManager.writeData("*gn#");
                         //
-
                         if(response=="N"){
                             Log.v("Bottles correctly","But");
                         }
@@ -196,6 +150,19 @@ public class ZentriOSBLEService extends Service implements Serializable
         String timeCommand = "*st" + strDate + "#";
         mZentriOSBLEManager.writeData(timeCommand);
         Log.v("Set Time correctly!",strDate);
+        /*
+        timeNow = Calendar.getInstance();
+        int second = timeNow.get(Calendar.SECOND);
+        int minute = timeNow.get(Calendar.MINUTE);
+        int hour = timeNow.get(Calendar.HOUR_OF_DAY);
+        int dayOfWeek = timeNow.get(Calendar.DAY_OF_WEEK);
+        int dayOfMonth = timeNow.get(Calendar.DAY_OF_MONTH);
+        int month = timeNow.get(Calendar.MONTH);
+        int year = timeNow.get(Calendar.YEAR);0
+       //String rtc_data = Integer.toString(second) + Integer.toString(minute) + Integer.toString(hour) + Integer.toString(dayOfWeek) + Integer.toString(dayOfMonth) + Integer.toString(month) + Integer.toString(year);
+        String rtc_data = String.format("%02d%02d%02d%d%02d%02d%04d", second, minute, hour, dayOfWeek, dayOfMonth, month + 1, year);
+         dataToSend = "*T" + rtc_data + "#";
+         */
     }
     private void startDeviceInfoActivity() {
         /*
@@ -203,15 +170,11 @@ public class ZentriOSBLEService extends Service implements Serializable
         mZentriOSBLEManager.setSystemCommandMode(CommandMode.MACHINE);*/
         setTime();
     }
-    /* if you choose to implement the onStartCommand() callback method, then you must explicitly stop the service, because the service
-     is now considered to be started. In this case, the service runs
-     until the service stops itself with stopSelf() or another component calls stopService(), regardless
-     of whether it is bound to any clients.
-      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         //trying to receive the arraylist
+
         if(intent != null){
             /*
             db = new DBHelper(this);
@@ -224,9 +187,8 @@ public class ZentriOSBLEService extends Service implements Serializable
                 Log.v("Device is connected","correctly");
             }
         }
-        /* must return an integer. The integer is a value that describes how the system
-         should continue the service in the event that the system kills it.
-         */
+        // Try to receive the list  from the database
+        // The service is starting, due to a call to startService()
         return mStartMode;
     }
 
@@ -256,7 +218,6 @@ public class ZentriOSBLEService extends Service implements Serializable
     {
         // The service is no longer used and is being destroyed
         Log.d(TAG, "Destroying service");
-        unregisterReceiver(mBroadcastReceiver);
         if (mZentriOSBLEManager != null)
         {
             mZentriOSBLEManager.stopScan();
@@ -392,6 +353,7 @@ public class ZentriOSBLEService extends Service implements Serializable
                     intent.putExtra(EXTRA_ID, ID);
                     intent.putExtra(EXTRA_RESPONSE_CODE, result.getResponseCode());
                     intent.putExtra(EXTRA_DATA, result.getData());
+                    dataResult = result;
                 }
                 mBroadcastManager.sendBroadcast(intent);
             }
@@ -406,7 +368,6 @@ public class ZentriOSBLEService extends Service implements Serializable
             }
         };
     }
-
 
     public static int getMode(Intent intent)
     {
