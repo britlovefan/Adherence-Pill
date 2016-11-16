@@ -12,21 +12,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Christina\Desktop\499\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jar="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\exploded-aar\Adherence-Pill\zentri_ble_command\unspecified\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
-        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
-        <dex dex="C:\Users\Christina\Desktop\499\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1_3f9e15c6fa0cc04af7149421b16d0ef685c9184b.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Christina\Desktop\499\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.0.0\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="c6d79137693d494dee16372d3921f919eb724ced">
-        <dex dex="C:\Users\Christina\Desktop\499\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-22.0.0_a3d881b3fa1c8e78a47803abb274daeff32ada19.jar" />
+        sha1="4d34e116b24748a585f3c1612aa123a46f161006">
+        <dex dex="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\pre-dexed\debug\Adherence-Pill-zentri_ble_command-unspecified_e2ab513202ac5eb511b21ee5c95faa0234dab90c.jar" />
     </item>
     <item
         is-multidex="false"
@@ -48,30 +39,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\exploded-aar\499_AndroidApp-master_Worked-master\zentri_ble\unspecified\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="9e6c0aa35e53d3daab0a53f15f1b24176569858f">
-        <dex dex="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\pre-dexed\debug\499_AndroidApp-master_Worked-master-zentri_ble-unspecified_9847accc6a941b57350536ef709da81974987f1f.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\exploded-aar\com.android.support\design\22.2.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
         sha1="fc63b820d54c8a27a3a614bdd93920e0076581c2">
         <dex dex="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\pre-dexed\debug\com.android.support-design-22.2.0_fd92dfc72d291b6101d4a41b7bc033253e1a6105.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Christina\.gradle\caches\modules-2\files-2.1\com.parse\parse-android\1.13.1\5f645bf60e3b88ccc02bd2a4018c5e3ef2f77d0a\parse-android-1.13.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="5f645bf60e3b88ccc02bd2a4018c5e3ef2f77d0a">
-        <dex dex="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\pre-dexed\debug\parse-android-1.13.1_72d49fb50919650a686bda82afe6355db8d25495.jar" />
     </item>
     <item
         is-multidex="false"
@@ -84,30 +57,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jar="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
         sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
-        <dex dex="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1_13e7790dfc21f5fe447b4dcc5896f692e0dc393d.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Christina\Desktop\499\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.1\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
-        <dex dex="C:\Users\Christina\Desktop\499\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-22.2.1_617c9cd9e698bcce14607ef380289dd366907183.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Christina\Desktop\499\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.1"
-        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="C:\Users\Christina\Desktop\499\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.0.1_0fd205d3d3de98642fc729640a5730a13722e7db.jar" />
+        <dex dex="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1_4d588741891e8bcda5650bfc8f3154ee84aac57e.jar" />
     </item>
     <item
         is-multidex="false"
@@ -120,21 +75,66 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Christina\Desktop\499\app\build\intermediates\exploded-aar\com.android.support\design\22.2.0\jars\classes.jar"
+        jar="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\exploded-aar\com.android.support\design\22.2.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
         sha1="fc63b820d54c8a27a3a614bdd93920e0076581c2">
-        <dex dex="C:\Users\Christina\Desktop\499\app\build\intermediates\pre-dexed\debug\com.android.support-design-22.2.0_9a97faca8d46ce1a9fbcc60a360ac90cfb96b47b.jar" />
+        <dex dex="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\pre-dexed\debug\com.android.support-design-22.2.0_79133fba036a27a22035c496845f4040b3839bd6.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Christina\Desktop\499\app\build\intermediates\exploded-aar\499\zentri_ble\unspecified\jars\classes.jar"
+        jar="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\exploded-aar\499_AndroidApp-master_Worked-master\zentri_ble\unspecified\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
         sha1="9e6c0aa35e53d3daab0a53f15f1b24176569858f">
-        <dex dex="C:\Users\Christina\Desktop\499\app\build\intermediates\pre-dexed\debug\499-zentri_ble-unspecified_689cf2fe11162f0c5ccc82fa2f5031a0deb5fc06.jar" />
+        <dex dex="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\pre-dexed\debug\499_AndroidApp-master_Worked-master-zentri_ble-unspecified_9847accc6a941b57350536ef709da81974987f1f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="c6d79137693d494dee16372d3921f919eb724ced">
+        <dex dex="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-22.0.0_ea997a3c7d66c9820261c0537fdd866b5330da1f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Christina\.gradle\caches\modules-2\files-2.1\com.parse\parse-android\1.13.1\5f645bf60e3b88ccc02bd2a4018c5e3ef2f77d0a\parse-android-1.13.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="5f645bf60e3b88ccc02bd2a4018c5e3ef2f77d0a">
+        <dex dex="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\pre-dexed\debug\parse-android-1.13.1_72d49fb50919650a686bda82afe6355db8d25495.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="C:\Users\Christina\Desktop\499_AndroidApp-master_Worked-master\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1_13e7790dfc21f5fe447b4dcc5896f692e0dc393d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.0.1_98c9e26034c9a2dc9a78b9b1a1f7205bdd466688.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\exploded-aar\Adherence-Pill\zentri_ble\unspecified\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="9e6c0aa35e53d3daab0a53f15f1b24176569858f">
+        <dex dex="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\pre-dexed\debug\Adherence-Pill-zentri_ble-unspecified_5f8785a4fcde5d2e91a26ea1cd9b3c73d3852095.jar" />
     </item>
     <item
         is-multidex="false"
@@ -147,12 +147,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Christina\Desktop\499\app\build\intermediates\exploded-aar\499\zentri_ble_command\unspecified\jars\classes.jar"
+        jar="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.1\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.1"
-        sha1="4d34e116b24748a585f3c1612aa123a46f161006">
-        <dex dex="C:\Users\Christina\Desktop\499\app\build\intermediates\pre-dexed\debug\499-zentri_ble_command-unspecified_1d0ae97529d3533b31de48a0eda18c495fac026d.jar" />
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-22.2.1_f1da9137cf12a3f121e71499fbd792de4a0e2afb.jar" />
     </item>
     <item
         is-multidex="false"

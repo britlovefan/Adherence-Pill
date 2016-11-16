@@ -13,6 +13,7 @@ import android.util.Log;
 import com.adherence.adherence.Connection.DBHelper;
 import com.zentri.zentri_ble_command.BLECallbacks;
 import com.zentri.zentri_ble_command.Command;
+import com.zentri.zentri_ble_command.CommandMode;
 import com.zentri.zentri_ble_command.ErrorCode;
 import com.zentri.zentri_ble_command.Result;
 import com.zentri.zentri_ble_command.ZentriOSBLEManager;
@@ -82,8 +83,11 @@ public class ZentriOSBLEService extends Service implements Serializable
     private IntentFilter mReceiverIntentFilter;
     private BroadcastReceiver mBroadcastReceiver;
     private boolean newData;
-    //Create its own receiver but How do I interact with it in the loop
+    private final boolean disableTxNotify = false;
+    private boolean mConnected;
+    private boolean receivedResponse;
 
+    //Create its own receiver but How do I interact with it in the loop
     private void initBroadCastReceiver(){
         mBroadcastReceiver = new BroadcastReceiver(){
             @Override
@@ -92,15 +96,35 @@ public class ZentriOSBLEService extends Service implements Serializable
                 switch (action) {
                     case ZentriOSBLEService.ACTION_STRING_DATA_READ:
                         String text = ZentriOSBLEService.getData(intent);
+                        receivedResponse = true;
                         Log.v("ZentriService Own","received String");
                         if (text.equals("N")) {
+                            Log.v("ZentriReceiver","No New Data!");
                             newData = false;
                             break;
                         }
                         if(text.equals("Y")){
+                            Log.v("ZentriReceiver","New Data!");
                             newData = true;
                             break;
                         }
+                    case ZentriOSBLEService.ACTION_CONNECTED:
+                        String deviceName = ZentriOSBLEService.getDeviceName(intent);
+                        int services = ZentriOSBLEService.getIntData(intent);
+                        //cancelConnectTimeout();
+                        //dismissConnectDialog();
+                        if (services == ZentriOSBLEService.SERVICES_NONE ||
+                                services == ZentriOSBLEService.SERVICES_OTA_ONLY) {
+                            Log.d("ZentriOSBLEService","Failed to discover TruConnect services");
+                            //showErrorDialog(R.string.error, R.string.error_service_disc);
+                            mZentriOSBLEManager.disconnect(disableTxNotify);
+                        } else if (!mConnected) {
+                            mConnected = true;
+                            Log.d(TAG, "Connected to " + deviceName);
+                            mZentriOSBLEManager.setMode(ZentriOSBLEManager.MODE_COMMAND_REMOTE);
+                            mZentriOSBLEManager.setSystemCommandMode(CommandMode.MACHINE);
+                        }
+                        break;
                 }
             }
         };
@@ -122,13 +146,13 @@ public class ZentriOSBLEService extends Service implements Serializable
     {
         // The service is being created
         Log.d(TAG, "Creating service");
-        // Set up the
-        initReceiverIntentFilter();
-        initBroadCastReceiver();
-        registerReceiver(mBroadcastReceiver, mReceiverIntentFilter);
-
+        // Set up the broadcast receiver
         mZentriOSBLEManager = new ZentriOSBLEManager();
         mBroadcastManager = LocalBroadcastManager.getInstance(this);
+        initReceiverIntentFilter();
+        initBroadCastReceiver();
+        mBroadcastManager.registerReceiver(mBroadcastReceiver, mReceiverIntentFilter);
+
         initCallbacks();
         initTruconnectManager();
     }
@@ -153,16 +177,22 @@ public class ZentriOSBLEService extends Service implements Serializable
                 public void run() {
                     try {
                         //check if connected!
-                        while (!mZentriOSBLEManager.isConnected()) {
+                        while (!mConnected) {
                             Thread.sleep(500);
                         }
                         setTime();
-                        mZentriOSBLEManager.setReceiveMode(com.zentri.zentri_ble.BLECallbacks.ReceiveMode.STRING);
                         mZentriOSBLEManager.writeData("*gn#");
-                        //
-
-                        if(response=="N"){
-                            Log.v("Bottles correctly","But");
+                        mZentriOSBLEManager.setReceiveMode(com.zentri.zentri_ble.BLECallbacks.ReceiveMode.STRING);
+                        //receivedResponse is a boolean to check whether the response of String has been received
+                        while(!receivedResponse){
+                            Thread.sleep(300);
+                        }
+                        if(!newData){
+                            Log.v(TAG,"No New Data");
+                        }
+                        else{
+                            Log.v(TAG,"New Data Here");
+                            mZentriOSBLEManager.writeData("*gi");
                         }
                     } catch (Exception e) {
                     }
@@ -256,7 +286,9 @@ public class ZentriOSBLEService extends Service implements Serializable
     {
         // The service is no longer used and is being destroyed
         Log.d(TAG, "Destroying service");
-        unregisterReceiver(mBroadcastReceiver);
+
+        mBroadcastManager.unregisterReceiver(mBroadcastReceiver);
+
         if (mZentriOSBLEManager != null)
         {
             mZentriOSBLEManager.stopScan();
@@ -297,7 +329,6 @@ public class ZentriOSBLEService extends Service implements Serializable
             @Override
             public void onConnected(String deviceName, int services)
             {
-                Log.d(TAG, deviceName+" onConnected");
                 //startDeviceInfoActivity();
                 Intent intent = new Intent(ACTION_CONNECTED);
                 intent.putExtra(EXTRA_NAME, deviceName);
@@ -353,8 +384,7 @@ public class ZentriOSBLEService extends Service implements Serializable
             public void onStringDataRead(String data)
             {
                 Log.d(TAG, "onDataRead - " + data);
-                //add
-                response = data;
+
                 Intent intent = new Intent(ACTION_STRING_DATA_READ);
                 intent.putExtra(EXTRA_DATA, data);
                 mBroadcastManager.sendBroadcast(intent);

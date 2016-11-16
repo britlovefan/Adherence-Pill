@@ -255,10 +255,12 @@ public class MainActivity2 extends Activity  {
                 Log.d(TAG, "Image recording: " + mRecording);
             }
         });
+
         mReceivedDataTextBox = (TextView) findViewById(R.id.receivedDataBox);
 
         mScrollView = (ScrollView) findViewById(R.id.scroll_view);
         GUISetCommandMode();//set up gui for command mode initially
+
         mDisconnectTimeoutTask = new Runnable() {
             @Override
             public void run() {
@@ -466,7 +468,6 @@ public class MainActivity2 extends Activity  {
                             mZentriOSBLEManager.setReceiveMode(ReceiveMode.BINARY);
                             count_bytes = 0;
                             header_done = false;
-//                            mZentriOSBLEManager.writeData("0");
                             break;
                         }
 
@@ -483,49 +484,6 @@ public class MainActivity2 extends Activity  {
                         }
 
                         Log.d(TAG, "text = : " + text);
-
-//                        if(mRecording) {
-//                            writeLog(text);
-//                            if (count_bytes == 0) {
-//                                val = Integer.parseInt(text);
-//                                len_image = val;
-//                                count_bytes++;
-//                            }
-//                            else if (count_bytes == 1) {
-//                                val = Integer.parseInt(text);
-//                                len_image += val*256;
-//                                imBytesSplit = new byte[2*len_image];
-//                                count_bytes++;
-//                                header_done = true;
-//                            }
-//                            else {
-//                                byte[] block = text.getBytes(Charset.forName("UTF-8"));
-//                                //byte[] block = ZentriOSBLEService.getByteData(intent);
-//                                System.arraycopy(block,0,imBytesSplit,count_bytes-2,block.length);
-//                                    /*for (int ii=0;ii<block.length;ii++) {
-//                                        imBytes[count_bytes-2+ii] = block[ii];
-//                                    }*/
-//                                count_bytes += block.length;
-//                                //imBytes[count_bytes-2] = (byte) val;
-//                            }
-//
-//                            if (count_bytes < len_image*2) mZentriOSBLEManager.writeData("0");
-//
-//                            //count_bytes++;
-//
-//                            if (count_bytes>=(2*len_image) && header_done) {
-//                                imBytes = new byte[len_image];
-//                                for (int ii=0;ii<len_image;ii++) {
-//                                    imBytes[ii] = (byte) (imBytesSplit[2*ii] + (imBytesSplit[(2*ii)+1]*16));
-//                                }
-//                                saveImage(imBytes);
-//                                mToggleIm.setChecked(false);
-//                                doStopRecording();
-//                                stopRecording();
-//                            }
-//
-//                                String dataToSend = "*gi#";
-//                                mZentriOSBLEManager.writeData(dataToSend);
 
                         if (gi == true) {
                             String dataToSend = "*ai#";
