@@ -37,10 +37,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.adherence.adherence.Connection.DBHelper;
-import com.parse.ParseObject;
 import com.zentri.zentri_ble.BLECallbacks.ReceiveMode;
 import com.zentri.zentri_ble_command.Command;
-import com.zentri.zentri_ble_command.CommandMode;
 import com.zentri.zentri_ble_command.ErrorCode;
 import com.zentri.zentri_ble_command.GPIODirection;
 import com.zentri.zentri_ble_command.GPIOFunction;
@@ -84,7 +82,6 @@ public class MainActivity2 extends Activity  {
     private ZentriOSBLEService mService;
     private boolean mBound = false;
 
-    private MyService myService;
     private boolean bound = false;
 
     private LocalBroadcastManager mLocalBroadcastManager;
@@ -255,7 +252,7 @@ public class MainActivity2 extends Activity  {
                 Log.d(TAG, "Image recording: " + mRecording);
             }
         });
-
+        // to display data
         mReceivedDataTextBox = (TextView) findViewById(R.id.receivedDataBox);
 
         mScrollView = (ScrollView) findViewById(R.id.scroll_view);
@@ -461,42 +458,34 @@ public class MainActivity2 extends Activity  {
 
                     case ZentriOSBLEService.ACTION_STRING_DATA_READ:
                         //if (mCurrentMode == ZentriOSBLEManager.MODE_STREAM)
-                        //{
                         String text = ZentriOSBLEService.getData(intent);
                         updateReceivedTextBox(text);
+                        //what does it means?
                         if (text.equals("I")) {
                             mZentriOSBLEManager.setReceiveMode(ReceiveMode.BINARY);
                             count_bytes = 0;
                             header_done = false;
                             break;
                         }
-
                         if (text.equals("N")) {
                             break;
                         }
-
-                        temp = text;
-                        if (temp.contains(":")) {
-                            ParseObject testObject = new ParseObject("TestXZ");
-                            testObject.put("TIME", temp);
-                            testObject.put("NAME", mCurrentDeviceName);
-                            testObject.saveEventually();
-                        }
-
                         Log.d(TAG, "text = : " + text);
+                          /*
+                            if (gi == true) {
+                                String dataToSend = "*ai#";
+                                mZentriOSBLEManager.writeData(dataToSend);
+                                gi = false;
+                            } else {
+                                String dataToSend = "*gi#";
+                                mZentriOSBLEManager.writeData(dataToSend);
+                                gi = true;
+                            }*/
 
-                        if (gi == true) {
-                            String dataToSend = "*ai#";
-                            mZentriOSBLEManager.writeData(dataToSend);
-                            gi = false;
-                        } else {
-                            String dataToSend = "*gi#";
-                            mZentriOSBLEManager.writeData(dataToSend);
-                            gi = true;
-                        }
-                        Log.d(TAG, "Bytes: " + count_bytes);
-                        //}
+                            Log.d(TAG, "Bytes: " + count_bytes);
                         break;
+
+                        //}
 
                     case ZentriOSBLEService.ACTION_BINARY_DATA_READ:
                         byte[] block = ZentriOSBLEService.getBinaryData(intent);
@@ -531,7 +520,6 @@ public class MainActivity2 extends Activity  {
                                 count_bytes += block.length;
                             }
                         }
-
                         //if (count_bytes < len_image) mZentriOSBLEManager.writeData("0");
                         //mZentriOSBLEManager.writeData("0");
 
@@ -547,16 +535,14 @@ public class MainActivity2 extends Activity  {
                             Bitmap bmp = BitmapFactory.decodeByteArray(imBytes, 0, len_image);
                             imView.setImageBitmap(bmp);
                             mZentriOSBLEManager.setReceiveMode(ReceiveMode.STRING);
-                            //mZentriOSBLEManager.writeData("*000#");
-                            //mZentriOSBLEManager.writeData("*R#");
-                            //mZentriOSBLEManager.writeData("*W#");
                         }
                         Log.d(TAG, "Bytes: " + count_bytes + "Val: " + block[0]);
-
+                        gi  = true;
                         break;
 
                     case ZentriOSBLEService.ACTION_ERROR:
                         ErrorCode errorCode = ZentriOSBLEService.getErrorCode(intent);
+                        Log.v("ERRORCODE",errorCode+"");
                         //handle errors
                         switch (errorCode) {
                             case CONNECT_FAILED:
@@ -674,12 +660,13 @@ public class MainActivity2 extends Activity  {
 
     private void startDeviceInfoActivity() {
         //GUISetCommandMode();
+        mDeviceList.clear();
+        /*
         mZentriOSBLEManager.setMode(ZentriOSBLEManager.MODE_COMMAND_REMOTE);
         mZentriOSBLEManager.setSystemCommandMode(CommandMode.MACHINE);
         mZentriOSBLEManager.getVersion();
-        mDeviceList.clear();
         mCurrentMode = ZentriOSBLEManager.MODE_STREAM;
-        x = mZentriOSBLEManager.setMode(mCurrentMode);
+        x = mZentriOSBLEManager.setMode(mCurrentMode);*/
         Toast.makeText(getApplicationContext(), "here!", Toast.LENGTH_LONG).show();
     }
     //下面的代码基本上是处理错误信息之类的可以以后再看

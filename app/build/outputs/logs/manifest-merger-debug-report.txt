@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml:2:1-64:12
+ADDED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml:2:1-63:12
 	package
 		ADDED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml:3:5-38
 		INJECTED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml
@@ -33,7 +33,7 @@ MERGED from [Adherence-Pill:zentri_ble:unspecified] C:\Users\Christina\Desktop\A
 	android:name
 		ADDED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml:10:9-53
 application
-ADDED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml:13:5-62:19
+ADDED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml:13:5-61:19
 MERGED from [com.android.support:recyclerview-v7:22.0.0] C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.0.0\AndroidManifest.xml:22:5-26:19
 MERGED from [com.android.support:support-v4:23.0.1] C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:design:22.2.0] C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\exploded-aar\com.android.support\design\22.2.0\AndroidManifest.xml:22:5-20
@@ -108,10 +108,6 @@ ADDED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifes
 		ADDED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml:57:13-47
 	android:name
 		ADDED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml:56:13-47
-service#com.adherence.adherence.MyService
-ADDED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml:60:9-46
-	android:name
-		ADDED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml:60:18-43
 uses-sdk
 INJECTED from C:\Users\Christina\Desktop\Adherence-Pill\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:recyclerview-v7:22.0.0] C:\Users\Christina\Desktop\Adherence-Pill\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.0.0\AndroidManifest.xml:20:5-43

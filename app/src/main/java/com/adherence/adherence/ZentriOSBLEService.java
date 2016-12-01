@@ -11,6 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.adherence.adherence.Connection.DBHelper;
+import com.parse.ParseObject;
 import com.zentri.zentri_ble_command.BLECallbacks;
 import com.zentri.zentri_ble_command.Command;
 import com.zentri.zentri_ble_command.CommandMode;
@@ -84,8 +85,11 @@ public class ZentriOSBLEService extends Service implements Serializable
     private BroadcastReceiver mBroadcastReceiver;
     private boolean newData;
     private final boolean disableTxNotify = false;
-    private boolean mConnected;
-    private boolean receivedResponse;
+    private boolean mConnected = false;
+    private boolean receivedStringResponse = false;
+    private int mCurrentMode;
+    private String mCurrentDeviceName;
+    private boolean gi;
 
     //Create its own receiver but How do I interact with it in the loop
     private void initBroadCastReceiver(){
@@ -96,23 +100,41 @@ public class ZentriOSBLEService extends Service implements Serializable
                 switch (action) {
                     case ZentriOSBLEService.ACTION_STRING_DATA_READ:
                         String text = ZentriOSBLEService.getData(intent);
-                        receivedResponse = true;
-                        Log.v("ZentriService Own","received String");
+                        Log.v("String data",text+"");
+                        receivedStringResponse = true;
                         if (text.equals("N")) {
                             Log.v("ZentriReceiver","No New Data!");
                             newData = false;
                             break;
                         }
+                        //
                         if(text.equals("Y")){
-                            Log.v("ZentriReceiver","New Data!");
                             newData = true;
-                            break;
                         }
+                        if(text.endsWith("Units")){
+
+                        }
+                        if(text.endsWith("mAh")){
+
+                        }
+                        if(text.endsWith("V")){
+
+                        }
+                        if (text.contains(":")) {
+                            ParseObject testObject = new ParseObject("TestXZ");
+                            testObject.put("TIME", text);
+                            //testObject.put("NAME", mCurrentDeviceName);
+                            testObject.saveEventually();
+                        }
+                        /*
+                        if (text.equals("I")) {
+                            mZentriOSBLEManager.setReceiveMode(com.zentri.zentri_ble.BLECallbacks.ReceiveMode.BINARY);
+                            break;
+                        }*/
+                        break;
                     case ZentriOSBLEService.ACTION_CONNECTED:
                         String deviceName = ZentriOSBLEService.getDeviceName(intent);
                         int services = ZentriOSBLEService.getIntData(intent);
-                        //cancelConnectTimeout();
-                        //dismissConnectDialog();
                         if (services == ZentriOSBLEService.SERVICES_NONE ||
                                 services == ZentriOSBLEService.SERVICES_OTA_ONLY) {
                             Log.d("ZentriOSBLEService","Failed to discover TruConnect services");
@@ -121,8 +143,10 @@ public class ZentriOSBLEService extends Service implements Serializable
                         } else if (!mConnected) {
                             mConnected = true;
                             Log.d(TAG, "Connected to " + deviceName);
+                            mZentriOSBLEManager.setSystemCommandMode(CommandMode.MACHINE);
                             mZentriOSBLEManager.setMode(ZentriOSBLEManager.MODE_COMMAND_REMOTE);
                             mZentriOSBLEManager.setSystemCommandMode(CommandMode.MACHINE);
+                            mZentriOSBLEManager.getVersion();
                         }
                         break;
                 }
@@ -176,51 +200,52 @@ public class ZentriOSBLEService extends Service implements Serializable
                 @Override
                 public void run() {
                     try {
-                        //check if connected!
+                        //check if connected
                         while (!mConnected) {
-                            Thread.sleep(500);
+                            Thread.sleep(50);
                         }
                         setTime();
-                        mZentriOSBLEManager.writeData("*gn#");
+
+                        //change to stream mode before sending the "*gn#"
+                        mCurrentMode = ZentriOSBLEManager.MODE_STREAM;
+                        mZentriOSBLEManager.setMode(mCurrentMode);
                         mZentriOSBLEManager.setReceiveMode(com.zentri.zentri_ble.BLECallbacks.ReceiveMode.STRING);
-                        //receivedResponse is a boolean to check whether the response of String has been received
-                        while(!receivedResponse){
-                            Thread.sleep(300);
+
+                        mZentriOSBLEManager.writeData("*gn#");
+                        //wait until there are string responds
+
+
+                        if(newData==false){
+                           Log.v(TAG,"No New Data");
                         }
-                        if(!newData){
-                            Log.v(TAG,"No New Data");
+                        while(newData) {
+                                Log.v(TAG, "New Data Here");
+                                if (gi == true) {
+                                    String dataToSend = "*ai#";
+                                    mZentriOSBLEManager.writeData(dataToSend);
+                                    gi = false;
+                                }
+                                if (gi = false) {
+                                    String dataToSend = "*gi#";
+                                    mZentriOSBLEManager.writeData(dataToSend);
+                                }
+                                mZentriOSBLEManager.writeData("*gn#");
+                                Thread.sleep(300);
                         }
-                        else{
-                            Log.v(TAG,"New Data Here");
-                            mZentriOSBLEManager.writeData("*gi");
-                        }
+                        //disconnect the device and move to the next one
+                        mZentriOSBLEManager.disconnect(true);
                     } catch (Exception e) {
+
                     }
+
                 }
             };
             t.start();
-
-            //ask for updates
-            /*
-            mZentriOSBLEManager.writeData("*gn#");
-            if(dataResult!=null) {
-                String text = dataResult.getData();
-                if(text=="N"){
-                    mZentriOSBLEManager.disconnect(true);
-                    Log.v("No new data","disconnect device");
-                }
-            }
-            else{
-                Log.v("ERROR","no response from bottles");
-                break;
-            }*/
         }
     }
     //send and set the current time to the bottle every time we connect to the bottle
     public void setTime(){
         Calendar c = Calendar.getInstance();
-        //004814107032016
-        //14:48:00; March 7, 2016
         SimpleDateFormat sdf = new SimpleDateFormat("ssmmHHddmmyyyy");
         String strDate = sdf.format(c.getTime());
         String timeCommand = "*st" + strDate + "#";
